@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import Stripe from 'stripe'
-import { InjectRepository } from "@nestjs/typeorm";
 import { ConfigService } from "@nestjs/config";
 
 @Injectable()

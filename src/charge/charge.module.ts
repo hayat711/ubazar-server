@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ChargeService } from './charge.service';
 import { ChargeController } from './charge.controller';
+import { AuthModule } from "../auth/auth.module";
+import { StripeModule } from "../stripe/stripe.module";
 
 @Module({
   controllers: [ChargeController],
-  providers: [ChargeService]
+  imports: [AuthModule, StripeModule]
 })
 export class ChargeModule {}
