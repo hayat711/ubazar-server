@@ -14,10 +14,18 @@ export class StripeService {
     });
   }
 
+
   public async createCustomer(name: string, email: string) {
     return this.stripe.customers.create({
       name,
       email
+    });
+  }
+
+  public async attachCreditCard(paymentMethod: string, customerId: string){
+    return this.stripe.setupIntents.create({
+      customer: customerId,
+      payment_method: paymentMethod
     });
   }
 
