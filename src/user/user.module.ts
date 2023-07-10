@@ -6,11 +6,12 @@ import { User } from "./entities/user.entity";
 import { ShippingAddressService } from "../shipping-address/shipping-address.service";
 import { ShippingAddressModule } from "../shipping-address/shipping-address.module";
 import { StripeModule } from "../stripe/stripe.module";
+import { EmailModule } from "../email/email.module";
 
 @Module({
   controllers: [UserController],
   providers: [UserService],
-  imports: [TypeOrmModule.forFeature([User]), ShippingAddressModule, StripeModule],
+  imports: [TypeOrmModule.forFeature([User]), ShippingAddressModule, StripeModule, EmailModule],
   exports: [UserService],
 
 })

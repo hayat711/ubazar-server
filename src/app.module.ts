@@ -22,6 +22,8 @@ import { PaymentModule } from './payment/payment.module';
 import { ReviewModule } from './review/review.module';
 import { StripeModule } from './stripe/stripe.module';
 import { ChargeModule } from './charge/charge.module';
+import { CreditCardModule } from './credit-card/credit-card.module';
+import { EmailModule } from "./email/email.module";
 
 @Module({
   imports: [
@@ -43,6 +45,8 @@ import { ChargeModule } from './charge/charge.module';
     ReviewModule,
     StripeModule,
     ChargeModule,
+    CreditCardModule,
+    EmailModule,
 
   ],
   controllers: [],

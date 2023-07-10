@@ -6,6 +6,7 @@ import {JwtModule} from "@nestjs/jwt";
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {JwtAuthStrategy} from "./strategies/jwt.strategy";
 import {GoogleOauthStrategy} from "./strategies/google-oauth.strategy";
+import { EmailModule } from "../email/email.module";
 
 @Module({
   imports: [UserModule,JwtModule.registerAsync({
@@ -17,7 +18,7 @@ import {GoogleOauthStrategy} from "./strategies/google-oauth.strategy";
         expiresIn: configService.get('JWT_ACCESS_EXPIRATION_TIME')
       }
     })
-  }), ],
+  }), EmailModule ],
   controllers: [AuthController],
 
   providers: [AuthService, JwtAuthStrategy, GoogleOauthStrategy, ],

@@ -50,6 +50,9 @@ export class User extends AbstractEntity<User>{
   @Column()
   stripCustomerId: string;
 
+  @Column({ default : false})
+  public isEmailConfirmed: boolean;
+
 
   @OneToOne(() => Bag, bag => bag.user, {
     eager: true, cascade: true, onDelete: 'CASCADE'
