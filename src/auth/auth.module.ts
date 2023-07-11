@@ -20,7 +20,6 @@ import { EmailModule } from "../email/email.module";
     })
   }), EmailModule ],
   controllers: [AuthController],
-
   providers: [AuthService, JwtAuthStrategy, GoogleOauthStrategy, ],
   exports: [AuthService],
 })
