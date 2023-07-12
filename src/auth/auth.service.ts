@@ -17,7 +17,8 @@ import {ConfigService} from "@nestjs/config";
 import RequestWithUser, {AuthRequest} from "./dto/req-with-user.dto";
 import { InvalidCredentials, UniqueViolation } from "../common/exceptions";
 import { MongoErrorCode } from "../common/enums/postgres-error.enum";
-
+import PostgresErrorCode from "../database/postgresErrorCode.enum";
+import { nanoid } from 'nanoid';
 
 @Injectable()
 export class AuthService {
@@ -39,27 +40,25 @@ export class AuthService {
                 user,
                 accessToken,
             }
-        } catch (error: any) {
-            if (error.code == MongoErrorCode.DuplicateKey) {
-                const detail = error.detail;
-                if (detail && detail.includes('email')) {
-                    throw new UniqueViolation('email');
+        } catch (err: any) {
+            if(err.code == PostgresErrorCode.UniqueViolation) {
+                if(err.detail.includes('email')) {
+                    throw new UniqueViolation('email')
                 }
-                if (detail && detail.includes('userName')) {
-                    throw new UniqueViolation('User_name already taken');
+
+                if(err.detail.includes('nick_name' || 'nick' || 'nickName')) {
+                    throw new UniqueViolation('nickName')
                 }
             }
-            throw new InternalServerErrorException();
+            throw new InternalServerErrorException()
         }
     }
 
     public async login(credentials: LoginDto, req: Request) {
         try{
             const { email, password } = credentials;
-            console.log('login credentials', credentials);
             const user = await  this.getAuthenticatedUser(email, password);
             const [accessToken, refreshToken] = await this.generateToken(user);
-
             await this.setToken(req, { accessToken, refreshToken})
 
             return {
@@ -86,7 +85,7 @@ export class AuthService {
 
 
     private async generateToken(user: User) {
-        const jwtid = uuidv4();
+        const jwtid = nanoid();
 
 
         const accessToken = await this.jwtService.signAsync({
@@ -110,10 +109,10 @@ export class AuthService {
 
         return [accessToken, refreshToken];
     }
-
     // set the cookies to access/refresh token in browser
     private async setToken(req: Request, { accessToken, refreshToken}:
         { accessToken:string, refreshToken?: string} ) {
+        console.log('the set token called');
         req.res.cookie('access_token', accessToken, {
             maxAge: 1000 * 60 * 60,
             httpOnly: true,

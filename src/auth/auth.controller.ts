@@ -23,7 +23,7 @@ export class AuthController {
     console.log('auth route is called');
 
     const user = this.authService.register(credentials, req);
-    await this.emailService.sendVerificationLink(credentials.email);
+    // await this.emailService.sendVerificationLink(credentials.email);
     return user;
   }
 
@@ -33,6 +33,8 @@ export class AuthController {
       @Body() credentials: LoginDto,
       @Req() req: Request
   ){
+    console.log('auth route is called');
+
     return this.authService.login(credentials, req);
   }
 

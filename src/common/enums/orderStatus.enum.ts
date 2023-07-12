@@ -1,4 +1,4 @@
-export enum PaymentEnum {
+export enum OrderStatus {
   notProcessed = 'not processed',
   processed = 'processed',
   shipped = 'shipped',

@@ -14,6 +14,8 @@ export class OrderController {
   @Post()
   create(@Body() createOrderDto: CreateOrderDto,
          @CurrentUser('id') userId: string) {
+    console.log('user', userId);
+    console.log('order data', createOrderDto);
     return this.orderService.createOrder(userId, createOrderDto);
   }
 
