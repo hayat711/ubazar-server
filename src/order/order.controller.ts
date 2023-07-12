@@ -19,9 +19,10 @@ export class OrderController {
     return this.orderService.createOrder(userId, createOrderDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
+    console.log('get router called');
     return this.orderService.getOrders();
   }
 

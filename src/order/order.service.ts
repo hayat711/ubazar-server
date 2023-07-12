@@ -16,6 +16,8 @@ export class OrderService {
     private readonly productService: ProductService,
   ) {
   }
+
+
   public async createOrder(userId: string,createOrderDto: CreateOrderDto) {
       try {
         const {products, paymentStatus, status, paymentEmail, totalPrice, totalItems} = createOrderDto;
@@ -30,7 +32,6 @@ export class OrderService {
 
         const newOrder = await this.orderRepository.save(order);
 
-       console.log('new order ', newOrder);
 
        const orderItems: OrderItem[] = [];
 
@@ -52,7 +53,6 @@ export class OrderService {
 
        // save the order to update the orderItems relationship
         const updatedOrder = await this.orderRepository.save(newOrder);
-        console.log('the updated and create order --> ', updatedOrder);
         return updatedOrder;
 
 

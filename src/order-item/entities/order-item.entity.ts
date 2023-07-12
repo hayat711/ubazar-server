@@ -14,7 +14,9 @@ export class OrderItem extends AbstractEntity<OrderItem>{
   @ManyToOne(() => Order, order => order.orderItems)
   order: Order;
 
-  @ManyToOne(() => Product, product => product.orderItems)
+  @ManyToOne(() => Product, product => product.orderItems, {
+    eager: true
+  })
   product: Product;
 
   @Column()
