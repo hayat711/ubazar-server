@@ -1,12 +1,13 @@
-import { Injectable } from '@nestjs/common';
-import { CreateOrderDto } from './dto/create-order.dto';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateOrderDto } from "./dto/create-order.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "./entities/order.entity";
 import { Repository } from "typeorm";
 import { OrderItemService } from "../order-item/order-item.service";
 import { OrderItem } from "../order-item/entities/order-item.entity";
 import { ProductService } from "../product/product.service";
+import { OrderStatus } from "../common/enums/orderStatus.enum";
+import { PaymentStatus } from "../common/enums/payment.enum";
 
 @Injectable()
 export class OrderService {
@@ -20,7 +21,7 @@ export class OrderService {
 
   public async createOrder(userId: string,createOrderDto: CreateOrderDto) {
       try {
-        const {products, paymentStatus, status, paymentEmail, totalPrice, totalItems} = createOrderDto;
+        const {products, paymentStatus, status, totalPrice, totalItems} = createOrderDto;
         const order = await this.orderRepository.create({
           user: { id: userId},
           orderItems: [],
@@ -32,17 +33,17 @@ export class OrderService {
 
         const newOrder = await this.orderRepository.save(order);
 
-
        const orderItems: OrderItem[] = [];
-
        for (const productId of products) {
          const product = await this.productService.findOne(productId);
+         console.log('----------------***--------------')
+
          if (product) {
            // @ts-ignore
            const orderItem = new OrderItem();
            orderItem.product = product;
            orderItem.quantity = 1;
-           orderItem.status = status;
+           orderItem.status = OrderStatus.notProcessed;
            orderItem.payment = 'Credit card';
            orderItems.push(orderItem);
          }
@@ -50,7 +51,6 @@ export class OrderService {
 
        // set the orderItems property of the order entity
         newOrder.orderItems = orderItems;
-
        // save the order to update the orderItems relationship
         const updatedOrder = await this.orderRepository.save(newOrder);
         return updatedOrder;
@@ -62,11 +62,21 @@ export class OrderService {
       }
   }
 
-  public async getOrders() {
+  public async getOrders(userId: string) {
     try{
-      return await this.orderRepository.find();
+
+      return  await this.orderRepository.find({
+        where: {
+          user: {id: userId}
+        },
+        order: {
+          createdAt: 'DESC'
+        }
+      });
+
+
     } catch (e) {
-      console.log(e.message);
+      console.log(e);
     }
   }
 
@@ -95,6 +105,18 @@ export class OrderService {
     } catch (e) {
       console.log(e.message);
     }
+  }
+
+  public async updatePaymentStatus(orderId: string, paymentStatus: PaymentStatus) {
+    const order = await this.orderRepository.findOne({
+      where: {
+        id : orderId
+      }
+    });
+    order.paymentStatus = paymentStatus;
+    console.log('the order paymend updated ')
+    await this.orderRepository.save(order);
+
   }
 
   public async cancelOrder(id: string) {

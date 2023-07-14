@@ -7,6 +7,7 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {JwtAuthStrategy} from "./strategies/jwt.strategy";
 import {GoogleOauthStrategy} from "./strategies/google-oauth.strategy";
 import { EmailModule } from "../email/email.module";
+import { JwtAuthGuard } from "../common/guards/jwt.auth.guard";
 
 @Module({
   imports: [UserModule,JwtModule.registerAsync({
@@ -20,7 +21,7 @@ import { EmailModule } from "../email/email.module";
     })
   }), EmailModule ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthStrategy, GoogleOauthStrategy, ],
-  exports: [AuthService],
+  providers: [AuthService, JwtAuthStrategy, JwtAuthGuard, GoogleOauthStrategy, ],
+  exports: [AuthService, JwtAuthGuard],
 })
 export class AuthModule {}

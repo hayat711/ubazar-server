@@ -2,8 +2,8 @@ import { OrderItem } from "../../order-item/entities/order-item.entity";
 import { BagProduct } from "../../bag-product/entities/bag-product.entity";
 import { IsNotEmpty, IsNumber } from "class-validator";
 import { OrderStatus } from "../../common/enums/orderStatus.enum";
-import { PaymentEnum } from "../../common/enums/payment.enum";
-import { IsNull } from "typeorm";
+import { PaymentStatus } from "../../common/enums/payment.enum";
+
 
 export class CreateOrderDto {
   products: string[];
@@ -16,11 +16,11 @@ export class CreateOrderDto {
   @IsNumber()
   totalItems: number;
 
+
   status: OrderStatus;
 
-  paymentStatus: PaymentEnum.notProcessed;
+  paymentStatus: PaymentStatus;
 
-  paymentEmail?: string;
 
 
 }

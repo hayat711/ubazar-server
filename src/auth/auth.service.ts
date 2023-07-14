@@ -29,7 +29,6 @@ export class AuthService {
 
 
     public async register(registrationData: CreateAccountDto, req: Request){
-        console.log('registrationData', registrationData);
         try{
             const user = await this.userService.create(registrationData);
 
@@ -112,7 +111,6 @@ export class AuthService {
     // set the cookies to access/refresh token in browser
     private async setToken(req: Request, { accessToken, refreshToken}:
         { accessToken:string, refreshToken?: string} ) {
-        console.log('the set token called');
         req.res.cookie('access_token', accessToken, {
             maxAge: 1000 * 60 * 60,
             httpOnly: true,
@@ -175,6 +173,12 @@ export class AuthService {
         }
     }
 
+
+    public async getProfile(req: Request) {
+        return {
+            user: req.user
+        }
+    }
 
 
 

@@ -13,7 +13,6 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     }
 
     handleRequest(err, user, info, context) {
-        console.log('user', user);
         const request = context.switchToHttp().getRequest();
         const cookies = request.cookies || {};
 

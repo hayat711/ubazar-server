@@ -1,5 +1,5 @@
 import { AbstractEntity } from "../../common/entities/abstract.entitiy";
-import { Column, Entity, ManyToMany, OneToMany, OneToOne } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { Product } from "../../product/entities/product.entity";
 import { User } from "../../user/entities/user.entity";
 import { BagProduct } from "../../bag-product/entities/bag-product.entity";
@@ -21,6 +21,7 @@ export class Bag extends AbstractEntity<Bag>{
 
 
   @OneToOne(() => User, user => user.bag)
+  @JoinColumn()
   user: User;
 
 
@@ -28,5 +29,7 @@ export class Bag extends AbstractEntity<Bag>{
     cascade: true, onDelete: 'CASCADE', eager: true
   })
   bagProducts: BagProduct[];
+
+
 
 }

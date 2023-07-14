@@ -25,7 +25,6 @@ export class OrderItem extends AbstractEntity<OrderItem>{
 
 
   @Column({
-    name: 'order_status',
     nullable: false,
     default: OrderStatus.notProcessed,
     type: 'enum',

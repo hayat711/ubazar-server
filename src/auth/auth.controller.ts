@@ -38,11 +38,18 @@ export class AuthController {
     return this.authService.login(credentials, req);
   }
 
-  @Delete('logout')
   @UseGuards(JwtAuthGuard)
+  @Delete('logout')
   async logout(@Req() req: RequestWithUser) {
     return this.authService.logout(req);
   }
   
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getProfile(@Req() req: Request) {
+    return this.authService.getProfile(req);
+  }
+
 
 }
