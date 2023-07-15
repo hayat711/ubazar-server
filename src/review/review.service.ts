@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
-import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
+import { Injectable } from "@nestjs/common";
+import { CreateReviewDto } from "./dto/create-review.dto";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Review } from "./entities/review.entity";
 import { Repository } from "typeorm";
+import { FitEnum } from "../common/enums/fit.enum";
 
 @Injectable()
 export class ReviewService {
@@ -11,36 +11,43 @@ export class ReviewService {
     @InjectRepository(Review) private readonly reviewRepository: Repository<Review>,
   ) {
   }
-  public async createReview(userId: string, productId : string, createReviewDto: CreateReviewDto) {
+  public async createReview(userId: string, createReviewDto: CreateReviewDto) {
+    const {author, productId,quality,rate,content,title} = createReviewDto;
     try {
       const review = await this.reviewRepository.create({
-        ...createReviewDto,
-        product: { id : createReviewDto.productId},
-        author: { id: createReviewDto.userId}
+        fit: FitEnum.FIT,
+        quality,
+        rate,
+        title,
+        content,
+        author,
+        user: { id: userId},
+        product: {id: productId}
       });
+
       const newReview = await this.reviewRepository.save(review);
+      console.log('created review is ', newReview);
+      return newReview;
     } catch (e) {
-      console.log('failed to create review ..', e.message());
+      console.log('failed to create review ..', e);
     }
   }
 
-  public async getReviews() {
+  public async getReviews(productId: string) {
     try {
-      return await this.reviewRepository.find();
+      return await this.reviewRepository.find({
+        where: {
+          product: { id: productId}
+        },
+        order: {
+          createdAt: 'DESC'
+        }
+      });
+
     } catch (e) {
-      console.log('failed .. ', e.message());
+      console.log('failed .. ', e);
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} review`;
-  }
 
-  update(id: number, updateReviewDto: UpdateReviewDto) {
-    return `This action updates a #${id} review`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} review`;
-  }
 }

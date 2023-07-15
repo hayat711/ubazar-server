@@ -1,5 +1,6 @@
 import { FitEnum } from "../../common/enums/fit.enum";
-import { IsString } from "class-validator";
+import { IsNumber, IsString } from "class-validator";
+import { IsNull } from "typeorm";
 
 export class CreateReviewDto {
   @IsString()
@@ -8,11 +9,20 @@ export class CreateReviewDto {
   @IsString()
   content: string;
 
+  @IsNumber()
   rate: number;
-  quality?: number;
-  fit?: FitEnum;
+
+
+  quality: number;
+
+  fit: FitEnum;
+
   selectedFile?:string;
+
   productId: string;
-  userId: string;
+
+  @IsString()
+  author: string
+
 }
 

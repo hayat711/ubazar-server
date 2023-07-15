@@ -12,7 +12,7 @@ export class BagProduct extends AbstractEntity<BagProduct>{
   bag: Bag;
 
   @ManyToOne(() => Product, product => product.bagProducts, {
-    onDelete: 'SET NULL'
+    onDelete: 'CASCADE'
   })
   product: Product;
 
