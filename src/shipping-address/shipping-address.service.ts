@@ -31,15 +31,5 @@ export class ShippingAddressService {
     });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} shippingAddress`;
-  }
 
-  update(id: number, updateShippingAddressDto: UpdateShippingAddressDto) {
-    return `This action updates a #${id} shippingAddress`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} shippingAddress`;
-  }
 }

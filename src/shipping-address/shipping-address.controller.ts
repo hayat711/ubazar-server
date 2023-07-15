@@ -21,18 +21,6 @@ export class ShippingAddressController {
     return this.shippingAddressService.findAll(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shippingAddressService.findOne(+id);
-  }
 
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateShippingAddressDto: UpdateShippingAddressDto) {
-  //   return this.shippingAddressService.update(+id, updateShippingAddressDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.shippingAddressService.remove(+id);
-  // }
+
 }
