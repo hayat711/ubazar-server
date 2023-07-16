@@ -28,10 +28,13 @@ export class Review extends AbstractEntity<Review>{
   @Column({
     nullable: true
   })
-  selectedFile: string;
+  imageUrl: string;
+
 
   @Column()
   author: string;
+
+
 
   @ManyToOne(()=> User, user => user.reviews)
   user: User;

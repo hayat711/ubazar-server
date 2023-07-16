@@ -15,7 +15,6 @@ export class CreateReviewDto {
 
   quality: number;
 
-  fit: FitEnum;
 
   selectedFile?:string;
 
@@ -23,6 +22,9 @@ export class CreateReviewDto {
 
   @IsString()
   author: string
+
+  @IsString()
+  fileName: string
 
 }
 
