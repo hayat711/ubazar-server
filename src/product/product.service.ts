@@ -17,7 +17,6 @@ export class ProductService {
   }
   async create(createProductDto: CreateProductDto) {
     const product = await this.productRepository.create(createProductDto);
-    console.log(product);
     await this.productRepository.save(product);
     return product;
   }
@@ -77,7 +76,6 @@ export class ProductService {
   // }
 
   public async findOne(productId: string) {
-    console.log('productId', productId);
     return await this.productRepository.findOne({
       where: {
         id: productId

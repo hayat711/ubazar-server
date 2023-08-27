@@ -5,21 +5,26 @@ import {LoginDto} from "./dto/login.dot";
 import RequestWithUser, {AuthRequest} from "./dto/req-with-user.dto";
 import { JwtAuthGuard } from "../common/guards/jwt.auth.guard";
 import { AuthService } from "./auth.service";
+import EmailService from "../email/email.service";
+import { User } from "../user/entities/user.entity";
 
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthService,
+              private readonly emailService: EmailService) {}
 
 
   @HttpCode(201)
   @Post('register')
-  async register(
+  async register (
       @Body() credentials: CreateAccountDto,
-      @Req() req: Request) {
+      @Req() req: Request)  {
     console.log('auth route is called');
 
-    return this.authService.register(credentials, req);
+    const user = this.authService.register(credentials, req);
+    // await this.emailService.sendVerificationLink(credentials.email);
+    return user;
   }
 
   @HttpCode(200)
@@ -28,14 +33,23 @@ export class AuthController {
       @Body() credentials: LoginDto,
       @Req() req: Request
   ){
+    console.log('auth route is called');
+
     return this.authService.login(credentials, req);
   }
 
-  @Delete('logout')
   @UseGuards(JwtAuthGuard)
+  @Delete('logout')
   async logout(@Req() req: RequestWithUser) {
     return this.authService.logout(req);
   }
   
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getProfile(@Req() req: Request) {
+    return this.authService.getProfile(req);
+  }
+
 
 }

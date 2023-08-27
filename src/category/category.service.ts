@@ -43,7 +43,6 @@ export class CategoryService {
 
 
   public async categoryProducts(cat_id: string) {
-    console.log('cat_id', cat_id);
     const products = await this.productService.getProductByCategory(cat_id)
     return products;
   }

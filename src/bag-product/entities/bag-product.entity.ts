@@ -11,23 +11,11 @@ export class BagProduct extends AbstractEntity<BagProduct>{
   @ManyToOne(() => Bag, bag => bag.bagProducts)
   bag: Bag;
 
-  @ManyToOne(() => Product, product => product.bagProducts)
+  @ManyToOne(() => Product, product => product.bagProducts, {
+    onDelete: 'CASCADE'
+  })
   product: Product;
 
-  @Column({
-    default: 1
-  })
-  quantity: number;
-
-  @Column({
-    type: 'float', default: 0
-  })
-  discount: number;
-
-  @Column({
-    type: 'float', default: 0
-  })
-  coupon: number;
 
 
 }

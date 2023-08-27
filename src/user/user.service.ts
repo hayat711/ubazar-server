@@ -53,7 +53,6 @@ export class UserService {
         stripCustomerId: stripeCustomer.id,
       });
       await this.userRepository.save(user);
-      console.log('created user ', user)
       return user;
 
   }
@@ -63,19 +62,12 @@ export class UserService {
       take: 20
     });
 
-    console.log('Users', users);
     return users;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async markEmailAsConfirmed(email: string) {
+    return this.userRepository.update({email}, {
+      isEmailConfirmed: true
+    });
   }
 }

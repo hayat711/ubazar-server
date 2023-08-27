@@ -1,11 +1,16 @@
 import { IsNumber, IsString } from "class-validator";
 import { Product } from "../../product/entities/product.entity";
+import { BagProduct } from "../../bag-product/entities/bag-product.entity";
 
 export class CreateBagDto {
-  id: string;
+
+  @IsNumber()
+  totalItems: number;
 
 
-  quantity: number;
-  product: any;
+  @IsNumber()
+  totalPrice: number;
+
+  items: BagProduct[];
 
 }

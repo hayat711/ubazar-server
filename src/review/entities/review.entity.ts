@@ -17,22 +17,29 @@ export class Review extends AbstractEntity<Review>{
   @Column()
   rate: number;
 
-  @Column({ nullable: true})
-  quality?: number;
+  @Column({ nullable: false})
+  quality: number;
 
   @Column({
-    type: "enum", default: FitEnum.FIT, enum: FitEnum, nullable: true
+    type: "enum", default: FitEnum.FIT, enum: FitEnum, nullable: false
   })
   fit: FitEnum;
 
   @Column({
     nullable: true
   })
-  selectedFile: string;
+  imageUrl: string;
+
+
+  @Column()
+  author: string;
+
 
 
   @ManyToOne(()=> User, user => user.reviews)
-  author: User;
+  user: User;
+
+
 
   @ManyToOne(() => Product, product => product.reviews)
   product: Product;

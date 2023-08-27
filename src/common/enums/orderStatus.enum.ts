@@ -1,4 +1,4 @@
-export enum PaymentStatus {
+export enum OrderStatus {
   notProcessed = 'notProcessed', // The order has not been processed yet.
   processed = 'processed', // The order has been processed.
   shipped = 'shipped', // The order has been shipped.

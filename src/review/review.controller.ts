@@ -1,37 +1,38 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile
+} from "@nestjs/common";
 import { ReviewService } from './review.service';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { UpdateReviewDto } from './dto/update-review.dto';
 import { CurrentUser } from "../common/decorators";
+import { JwtAuthGuard } from "../common/guards/jwt.auth.guard";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { Express} from "express";
+import { MulterFile } from 'multer';
 
 @Controller('review')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto,
+  @UseInterceptors(FileInterceptor('image'))
+  async create(@Body() createReviewDto: CreateReviewDto,
          @CurrentUser('id') userId: string,
-         @Param('productId') productId: string) {
-    return this.reviewService.createReview(userId, productId, createReviewDto);
+          @UploadedFile() file: MulterFile,
+               ) {
+    return this.reviewService.createReview(userId, createReviewDto, file);
   }
 
   @Get()
-  findAll() {
-    return this.reviewService.getReviews();
+  findAll(@Param('productId') productId: string) {
+    return this.reviewService.getReviews(productId);
   }
-  //
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.reviewService.findOne(+id);
-  // }
-  //
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateReviewDto: UpdateReviewDto) {
-  //   return this.reviewService.update(+id, updateReviewDto);
-  // }
-  //
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.reviewService.remove(+id);
-  // }
+
 }

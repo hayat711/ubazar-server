@@ -50,6 +50,9 @@ export class User extends AbstractEntity<User>{
   @Column()
   stripCustomerId: string;
 
+  @Column({ default : false})
+  public isEmailConfirmed: boolean;
+
 
   @OneToOne(() => Bag, bag => bag.user, {
     eager: true, cascade: true, onDelete: 'CASCADE'
@@ -67,7 +70,7 @@ export class User extends AbstractEntity<User>{
 
   @OneToOne(() => ShippingAddress,shippingAddress => shippingAddress.user,
     {
-      cascade: true, eager: true, onDelete: 'CASCADE'
+      cascade: true,  onDelete: 'CASCADE', eager: true,
     })
   @JoinColumn()
   shippingAddress:ShippingAddress;
